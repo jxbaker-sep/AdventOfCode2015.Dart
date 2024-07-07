@@ -13,7 +13,7 @@ final matcher = (
   my.word
   ).map((m) => (m[0] as String, m[1] as String));
 
-typedef Molecule = List<String>;
+typedef Molecule = String;
 typedef Replacements = Map<String, List<Molecule>>;
 typedef Day19Input = (Replacements, Molecule);
 
@@ -23,10 +23,10 @@ Day19Input parse(String s) {
   final m = p[0].map((line) => matcher.allMatches(line).first)
     .groupFoldBy((it) => it.$1, (List<Molecule>? p, it) {
       final v = p ?? []; 
-      v.add(splitIntoAtoms(it.$2)); 
+      v.add((it.$2)); 
       return v;
     });
-  return (m, splitIntoAtoms(p[1].single));
+  return (m, (p[1].single));
 }
 
 Future<void> main() async {
@@ -40,7 +40,7 @@ Future<void> main() async {
 }
 
 int do1(Day19Input input) {
-  return expandMolecule(input.$1, input.$2).map((l) => l.join()).toSet().length;
+  return expandMolecule(input.$1, input.$2).toSet().length;
 }
 
 int do2(Day19Input input) {
@@ -58,34 +58,29 @@ int do2(Day19Input input) {
   throw Exception('wut?');
 }
 
-Molecule splitIntoAtoms(String input) => RegExp(r'[A-Z][a-z]*').allMatches(input).map((m) => m[0]!).toList();
-
-List<Molecule> expandMolecule(Replacements input, Molecule molecule) {
-  final List<Molecule> result = [];
-  for(final index in my.range(molecule.length)) {
-    final element = molecule[index];
-    if (input[element] != null) {
-      for(final repl in input[element]!) {
-        result.add(molecule.sublist(0, index) + repl + molecule.sublist(index + 1));
+Iterable<Molecule> expandMolecule(Replacements input, Molecule molecule) sync* {
+  for(final entry in input.entries) {
+    final matches = entry.key.allMatches(molecule);
+    for(final repl in entry.value) {
+      for(final m in matches) {
+        final result = molecule.substring(0, m.start) + repl + molecule.substring(m.end);
+        yield result;
       }
     }
   }
-  return result;
 }
 
 Iterable<Molecule> collapseMolecule(Replacements input, Molecule molecule) sync* {
-  final mString = molecule.join();
   for(final entry in input.entries) {
-    for(final repl_ in entry.value) {
-      final repl = repl_.join();
-      final matches = repl.allMatches(mString);
+    for(final repl in entry.value) {
+      final matches = repl.allMatches(molecule);
       for(final m in matches) {
-        final result = mString.substring(0, m.start) + entry.key + mString.substring(m.end);
+        final result = molecule.substring(0, m.start) + entry.key + molecule.substring(m.end);
         if (entry.key == 'e') {
-          if (result == 'e') yield ['e'];
+          if (result == 'e') yield 'e';
           continue;
         }
-        yield splitIntoAtoms(result);
+        yield result;
       }
     }
   }
