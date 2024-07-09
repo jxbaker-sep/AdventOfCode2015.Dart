@@ -10,8 +10,8 @@ Future<void> main() async {
   final sample = parse(await getInput('day24.sample'));
   final data = parse(await getInput('day24'));
 
-  // test(do1(sample), 99);
-  test(do1(data), 0);
+  test(do1(sample), 99);
+  // test(do1(data), 0);
 }
 
 int do1(List<int> sample) {
@@ -49,16 +49,20 @@ Iterable<Triplet> findTriplets(List<int> initial, int needle) sync* {
   }
 }
 
-
-Iterable<List<int>> findSubset(List<int> initial, int needle) sync* {
+final Map<String, List<List<int>>> _cache = {};
+List<List<int>> findSubset(List<int> initial, int needle) {
   if (needle == 0) {
-    yield [];
-    return;
+    return [[]];
   }
-  if (initial.isEmpty) return;
+  if (initial.isEmpty) return [];
+  final key = initial.join(",");
+  if (_cache.containsKey(key)) return _cache[key]!;
   final first = initial.first;
   // Note: this depends on the property of the list being in ascending order
-  if (first > needle) return;
-  yield* findSubset(initial.sublist(1), needle);
-  yield* findSubset(initial.sublist(1), needle - first).map((it) => [first] + it);
+  if (first > needle) return [];
+  final List<List<int>> result = [];
+  [].addAll(findSubset(initial.sublist(1), needle));
+  [].addAll(findSubset(initial.sublist(1), needle - first).map((it) => [first] + it));
+  _cache[key] = result;
+  return result;
 }
