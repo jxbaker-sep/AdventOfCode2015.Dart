@@ -33,19 +33,11 @@ int quantumEntanglement(Triplet t) {
 
 Iterable<Triplet> findTriplets(List<int> initial, int needle) sync* {
   final subsets1 = findSubset(initial, needle);
-  for (final t1 in subsets1) {
+  for (final (t1dex, t1) in subsets1.indexed) {
     print(t1);
-    final tdiff = initial.toSet().difference(t1.toSet()).toList();
-    tdiff.sort();
-    final subsets2 = findSubset(tdiff, needle);
-    for (final t2 in subsets2) {
-      final tdiff2 = tdiff.toSet().difference(t2.toSet()).toList();
-      tdiff2.sort();
-      final subsets3 = findSubset(tdiff2, needle);
-      for (final t3 in subsets3) {
-        // print('$t1,$t2,$t3');
-        yield (t1, t2, t3);
-      }
+    for (final t2 in subsets1.skip(t1dex + 1)) {
+      final remainder2 = initial.toSet().difference(t1.toSet()).difference(t2.toSet());
+      if (remainder2.sum == needle) yield (t1, t2, remainder2.toList());
     }
   }
 }
