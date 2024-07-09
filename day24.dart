@@ -10,8 +10,8 @@ Future<void> main() async {
   final sample = parse(await getInput('day24.sample'));
   final data = parse(await getInput('day24'));
 
-  test(do1(sample), 99);
-  // test(do1(data), 0);
+  // test(do1(sample), 99);
+  test(do1(data), 0);
 }
 
 int do1(List<int> sample) {
@@ -43,26 +43,27 @@ Iterable<Triplet> findTriplets(List<int> initial, int needle) sync* {
       tdiff2.sort();
       final subsets3 = findSubset(tdiff2, needle);
       for (final t3 in subsets3) {
+        // print('$t1,$t2,$t3');
         yield (t1, t2, t3);
       }
     }
   }
 }
 
-final Map<String, List<List<int>>> _cache = {};
+final Map<(String, int), List<List<int>>> _cache = {};
 List<List<int>> findSubset(List<int> initial, int needle) {
   if (needle == 0) {
     return [[]];
   }
   if (initial.isEmpty) return [];
-  final key = initial.join(",");
+  final key = (initial.join(","), needle);
   if (_cache.containsKey(key)) return _cache[key]!;
   final first = initial.first;
   // Note: this depends on the property of the list being in ascending order
   if (first > needle) return [];
   final List<List<int>> result = [];
-  [].addAll(findSubset(initial.sublist(1), needle));
-  [].addAll(findSubset(initial.sublist(1), needle - first).map((it) => [first] + it));
+  result.addAll(findSubset(initial.sublist(1), needle));
+  result.addAll(findSubset(initial.sublist(1), needle - first).map((it) => [first] + it));
   _cache[key] = result;
   return result;
 }
