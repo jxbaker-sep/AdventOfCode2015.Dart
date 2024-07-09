@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+
 import 'utils/input.dart';
 import 'utils/my_extensions.dart';
 import 'utils/test.dart';
@@ -38,11 +40,11 @@ Iterable<dynamic> leaves(dynamic json) sync* {
 }
 
 int do1(dynamic json) {
-  return leaves(json).whereType<int>().sum();
+  return leaves(json).whereType<int>().sum;
 }
 
 int do2(dynamic json) {
-  return nonRedLeaves(json).whereType<int>().sum();
+  return nonRedLeaves(json).whereType<int>().sum;
 }
 
 Future<void> main() async {

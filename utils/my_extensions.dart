@@ -8,6 +8,7 @@ extension MyExtensions<T> on Iterable<T> {
   }
 
   int maxBy(int Function(T t) callback) => map(callback).max;
+  int minBy(int Function(T t) callback) => map(callback).min;
 
   Iterable<T2> flatmap<T2>(Iterable<T2> Function(T t) callback) {
     return map(callback).expand((i)=>i);
@@ -19,12 +20,6 @@ extension MyExtensions<T> on Iterable<T> {
       result[asKey(item)] = asValue(item);
     }
     return result;
-  }
-}
-
-extension MyIntIterableExtensions on Iterable<int> {
-  int sum() {
-    return isEmpty ? 0 : reduce((a,b)=>a+b);
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 
 import 'utils/input.dart';
@@ -26,7 +27,7 @@ final matcher = (my.word.skip(after: string("would").trim()).trim() & gainOrLose
 int score(Map<(String, String), int> scoring, List<String> seating) {
   return Iterable.generate(seating.length, (i) => (i, (i+1) % seating.length))
     .map((pair) => scoring[(seating[pair.$1], seating[pair.$2])]! + scoring[(seating[pair.$2], seating[pair.$1])]!)
-    .sum();
+    .sum;
 }
 
 int do1(List<Datum> data) {
