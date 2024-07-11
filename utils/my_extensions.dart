@@ -1,7 +1,5 @@
 import 'package:collection/collection.dart';
 
-import 'range.dart';
-
 extension MyExtensions<T> on Iterable<T> {
   int sumBy(int Function(T t) callback) {
     return isEmpty ? 0 : map(callback).reduce((a,b)=>a+b);
@@ -64,10 +62,10 @@ extension MyListExtensions<T> on List<T> {
       yield [];
       return;
     }
-    for(final index in range(length)) {
+    for(final (index, value) in indexed) {
       final remaining = sublist(0, index) + sublist(index + 1);
       for(final other in remaining.permute()) {
-        yield [this[index]] + other;
+        yield [value] + other;
       }
     }
   }

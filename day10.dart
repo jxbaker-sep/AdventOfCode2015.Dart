@@ -1,7 +1,6 @@
 
 import 'utils/input.dart';
 import 'utils/my_extensions.dart';
-import 'utils/range.dart';
 import 'utils/test.dart';
 
 
@@ -40,7 +39,7 @@ Iterable<(int, String)> rle(List<String> input) sync* {
 }
 
 int do1(List<String> chars, int iterations) {
-  for(final _ in range(iterations)) {
+  for(final _ in Iterable.generate(iterations)) {
     final current = rle(chars);
     chars = current.flatmap((x) => '${x.$1}'.split('') + [x.$2]).toList();
   }

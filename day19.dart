@@ -6,7 +6,6 @@ import 'utils/input.dart';
 import 'utils/my_extensions.dart';
 import 'utils/parse_utils.dart' as my;
 import 'utils/test.dart';
-import 'utils/range.dart' as my;
 
 final matcher = (
   my.word.skip(after: string('=>')) &

@@ -6,7 +6,6 @@ import 'package:petitparser/petitparser.dart';
 import 'utils/input.dart';
 import 'utils/my_extensions.dart';
 import 'utils/parse_utils.dart' as my;
-import 'utils/range.dart' as my;
 import 'utils/test.dart';
 
 class Reindeer {
@@ -64,7 +63,7 @@ class AnnotatedReindeer {
 
 int do2(List<Reindeer> deer, int time) {
   final scores = deer.map((d) => AnnotatedReindeer(d)).toList();
-  for(final _ in my.range(time)) {
+  for(final _ in Iterable.generate(time)) {
     for (final d in scores) {
       d.tick();
     }

@@ -3,7 +3,6 @@ import 'package:collection/collection.dart';
 import 'utils/input.dart';
 import 'utils/my_extensions.dart';
 import 'utils/position.dart';
-import 'utils/range.dart';
 import 'utils/test.dart';
 
 typedef Grid = Set<Position>;
@@ -33,7 +32,7 @@ int do1(Grid grid, int generations, int gridSize, bool cornersStuckOn) {
   final corners = {Position(0, 0), Position(0, gridSize-1), Position(gridSize-1, 0), Position(gridSize-1, gridSize-1)};
   if (cornersStuckOn) grid = grid.union(corners);
   onGrid(Position p) => p.x >=0 && p.x < gridSize && p.y >= 0 && p.y < gridSize;
-  for (final _ in range(generations)) {
+  for (final _ in Iterable.generate(generations)) {
     final neighbors = grid.flatmap((p) => p.neighbors().where(onGrid)).toList();
     // eg, counts[(x, y)] == 5 means that position x,y has 5 neighbors turned on
     final counts = neighbors.groupFoldBy((p) => p, (int? previous, _) => (previous ?? 0) + 1);

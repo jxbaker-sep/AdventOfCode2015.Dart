@@ -72,6 +72,7 @@ List<int> findQuadruplets(List<int> initial, int needle) {
   for (final (t1dex, t1) in subsets1.indexed) {
     print('$t1: $smallestKnown');
     for (final (t2dex, t2) in subsets1.skip(t1dex + 1).indexed) {
+      if (t1.toSet().intersection(t2.toSet()).isNotEmpty) continue;
       for (final (t3dex, t3) in subsets1.skip(t2dex + 1).indexed) {
         final remainder2 = initial.toSet().difference(t1.toSet()).difference(t2.toSet()).difference(t3.toSet());
         if (remainder2.sum == needle) {
